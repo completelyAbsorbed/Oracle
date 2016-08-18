@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "#####\n# some documentation should go here\n#####\n\n# get oracle from yawgatog\n\n# thanks to r2Evans on StackOverflow\n# http://stackoverflow.com/questions/38958597/r-split-text-on-empty-line\n\n\noracleRaw <- readLines(\"All Sets.txt\")\n\nbreaks <- which(!nzchar(oracleRaw))\nnbreaks <- length(breaks)\nif (nbreaks > 0L) {\n  oracle <- mapply(function(a,b) paste(oracleRaw[a:b], collapse = \" \"),\n                   c(1L, breaks[-nbreaks]),\n                   c(breaks[-1L], length(oracleRaw)))\n}\n\n\noracleRaw <- readLines(\"All Sets.txt\")\n\nbreaks <- which(!nzchar(oracleRaw))\nnbreaks <- length(breaks)\nif (nbreaks > 0L) {\n  oracle <- mapply(function(a,b) paste(oracleRaw[a:b], collapse = \" \"),\n                   c(1L, breaks[1:(nbreaks-1)]),\n                   breaks)\n}\n\noracle[1]\n\nbreaks[1]\noracleRaw[breaks[1]]\n\n\n#################\n\n# how to strip out a creatures basic attributes line to convert to a vector\n\n\nunlist(strsplit(oracleRaw[breaks[72]+5], split=\", \"))\n\n################\n\n# find differences in breaks\n\ndiff <- vector()\n\nfor(i in 2:length(breaks)){\n  diff <- c(diff, breaks[i] - breaks[i-1])\n}\n\nmax(diff)\n\nmin(diff)\n\nplot(sort(diff))\n\n\n# function to get a card based on number\n\ngetCard <- function(breakNum, oracleRaw, breaks){\n  return(oracleRaw[(breaks[breakNum] + 1):(breaks[breakNum + 1] - 1)])\n}\n\n\ngetCard(100, oracleRaw, breaks)\ngetCard(200, oracleRaw, breaks)\ngetCard(300, oracleRaw, breaks)\ngetCard(400, oracleRaw, breaks)   # no casting cost, language for Transform,\ngetCard(500, oracleRaw, breaks)\ngetCard(600, oracleRaw, breaks)\ngetCard(700, oracleRaw, breaks)\ngetCard(800, oracleRaw, breaks)\ngetCard(900, oracleRaw, breaks)\ngetCard(1000, oracleRaw, breaks)\n\ngetCard(length(breaks) - 1, oracleRaw, breaks) # this is the last index that will work\n\n\n\n# fill a ragged Momir database\n\nMomir <- list()\n\ncreature <- \"Creature\"\nunhinged <- \"UNH-\"\nunglued <- \"UG-\" # might be problematic if a new set comes out \"_UG-\"\n                 # UG- filter only removed 8 creatures... seems... low...\n\nMomirCount <- 0\n\nfor(i in 1:(length(breaks) - 1)){\n  card <- getCard(i, oracleRaw, breaks)\n  if(grepl(creature,card[3]) & !grepl(unhinged, card[length(card)]) & !grepl(unglued, card[length(card)])){\n    MomirCount <- MomirCount + 1\n    Momir[[MomirCount]] <- card\n  }\n}\n\n\n",
+    "created" : 1471277022546.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3321274119",
+    "id" : "C82EAEC5",
+    "lastKnownWriteTime" : 1471539165,
+    "last_content_update" : 1471539165925,
+    "path" : "D:/GITHUB/Oracle/loadOracle.R",
+    "project_path" : null,
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
