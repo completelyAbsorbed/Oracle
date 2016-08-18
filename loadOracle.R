@@ -4,9 +4,11 @@
 
 # get oracle from yawgatog
 
-# thanks to r2Evans on StackOverflow
+# helpful links that informed some of the code below :
 # http://stackoverflow.com/questions/38958597/r-split-text-on-empty-line
+# http://stackoverflow.com/questions/7878992/finding-the-indexes-of-multiple-overlapping-matching-substrings
 
+setwd("D:/GITHUB/Oracle")
 
 oracleRaw <- readLines("All Sets.txt")
 
@@ -85,7 +87,7 @@ getCard(length(breaks) - 1, oracleRaw, breaks) # this is the last index that wil
 
 Momir <- list()
 
-creature <- "Creature"
+creature <- "Creature --"
 unhinged <- "UNH-"
 unglued <- "UG-" # might be problematic if a new set comes out "_UG-"
                  # UG- filter only removed 8 creatures... seems... low...
@@ -100,6 +102,121 @@ for(i in 1:(length(breaks) - 1)){
   }
 }
 
+
+#get 0-cost creatures
+
+Momir0 <- list()
+
+MomirCount0 <- 0
+
+for(i in 1:(length(breaks) - 1)){
+  card <- getCard(i, oracleRaw, breaks)
+  if(grepl(creature,card[3]) & !grepl(unhinged, card[length(card)]) & !grepl(unglued, card[length(card)]) & 
+     card[2] == 0){
+    MomirCount0 <- MomirCount0 + 1
+    Momir0[[MomirCount0]] <- card
+  }
+}
+
+Momir0
+
+# look at unique mana costs among creatures
+
+UniqueMC <- vector()
+MC <- vector()
+
+for(i in 1:length(Momir)){
+  MC <- c(MC, Momir[[i]][2])
+}
+
+UniqueMC <- sort(unique(MC))
+
+UniqueMC 
+
+print(paste("The length of UniqueMC is : ", length(UniqueMC), sep = ""))
+
+
+
+
 # next make CMC variable
 
+CMC <- vector()
 
+for(i in 1:length(Momir)){
+ 
+}
+
+
+getCMC <- function(manaCost){  # if new mana paradigms emerge, this will need to be updated and tested!
+  runningTotal <- 0
+  Xexpr <- Xdex <- TWOexpr <- TWOdex <- SPLITexpr <- SPLITdex <- STDexpr <- STDdex <- vector()
+  # remove all "X" [0 per]
+    # do a perl-based regex, then reduce to an index in Xdex
+    Xexpr <- gregexpr("(?=X)", manaCost, perl = TRUE)[[1]]
+    Xdex <- Xexpr[1:length(Xexpr)]
+    # augment manaCost
+    if(length(Xdex > 0) & !(length(Xdex) == 1 & min(Xdex) == -1)){
+      if(min(Xdex) > 1){
+        manaCost <- paste(substr(manaCost, 1, min(Xdex) - 1), 
+                          substr(manaCost, max(Xdex) + 1, nchar(manaCost)), sep = "")
+      }
+      else{
+        manaCost <- substr(manaCost, max(Xdex) + 1, nchar(manaCost))
+      }
+    }
+  # if contains "2/" [2 per]
+    # do a perl-based regex, then reduce to an index in Xdex
+    TWOexpr <- gregexpr("(?=2/)", manaCost, perl = TRUE)[[1]]
+    TWOdex <- TWOexpr[1:length(TWOexpr)]
+    # augment manaCost, 
+    if(length(TWOdex > 0) & !(length(TWOdex) == 1 & min(TWOdex) == -1)){
+      if(min(TWOdex) > 1){
+        manaCost <- paste(substr(manaCost, 1, min(TWOdex) - 2), 
+                          substr(manaCost, max(TWOdex) + 4, nchar(manaCost)), sep = "")
+      }
+      else{
+        manaCost <- substr(manaCost, max(TWOdex) + 4, nchar(manaCost))
+      }
+      runningTotal <- runningTotal + 2 * length(TWOdex)
+    }
+  # if contains "(w/" | "(u/" | "(r/" | "(b/" | "(g/" [1 per] #check that phyrexian mana CMC = 1
+    SPLITexpr <- gregexpr("(?=w/)", manaCost, perl = TRUE)[[1]]
+    if(!(SPLITexpr == -1)){
+      SPLITdex <- c(SPLITdex, SPLITexpr[1:length(SPLITexpr)])
+    }
+    SPLITexpr <- gregexpr("(?=u/)", manaCost, perl = TRUE)[[1]]
+    if(!(SPLITexpr == -1)){
+      SPLITdex <- c(SPLITdex, SPLITexpr[1:length(SPLITexpr)])
+    }
+    SPLITexpr <- gregexpr("(?=b/)", manaCost, perl = TRUE)[[1]]
+    if(!(SPLITexpr == -1)){
+      SPLITdex <- c(SPLITdex, SPLITexpr[1:length(SPLITexpr)])
+    }
+    SPLITexpr <- gregexpr("(?=r/)", manaCost, perl = TRUE)[[1]]
+    if(!(SPLITexpr == -1)){
+      SPLITdex <- c(SPLITdex, SPLITexpr[1:length(SPLITexpr)])
+    }
+    SPLITexpr <- gregexpr("(?=g/)", manaCost, perl = TRUE)[[1]]
+    if(!(SPLITexpr == -1)){
+      SPLITdex <- c(SPLITdex, SPLITexpr[1:length(SPLITexpr)])
+    }
+    runningTotal <- runningTotal + length(SPLITdex)  # need if for empty case ######### !!! !!! !!!
+    
+    # augment manaCost, 
+    if(length(SPLITdex > 0)){
+      if(min(SPLITdex) > 1){
+        manaCost <- paste(substr(manaCost, 1, min(SPLITdex) - 2), 
+                          substr(manaCost, max(SPLITdex) + 4, nchar(manaCost)), sep = "")
+      }
+      else{
+        manaCost <- substr(manaCost, max(SPLITdex) + 4, nchar(manaCost))
+      }
+    }                                
+    # remove listings
+  
+  # if contains "W" | "U" | "R" | "B" | "G" | "C" [1 per]
+  
+    # remove listings
+  
+  # should be nothing or a number remaining [# or 0]
+}
