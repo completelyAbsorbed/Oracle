@@ -100,4 +100,6 @@ for(i in 1:(length(breaks) - 1)){
   }
 }
 
+# next make CMC variable
+
 
