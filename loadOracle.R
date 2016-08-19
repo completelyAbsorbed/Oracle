@@ -277,7 +277,17 @@ getCMC <- function(manaCost){  # if new mana paradigms emerge, this will need to
   return(runningTotal)
 }
 
+# display CMC for each unique MC
 
 for(mc in UniqueMC){
   print(paste("Mana Cost : ", mc, "      CMC : ", getCMC(mc), sep = ""))
 }
+
+
+# Append CMC to the last entry for each card in Momir
+
+for(i in 1:length(Momir)){
+  Momir[[i]][length(Momir[[i]]) + 1] <- getCMC(Momir[[i]][2])
+}
+
+head(Momir)
