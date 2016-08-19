@@ -286,8 +286,37 @@ for(mc in UniqueMC){
 
 # Append CMC to the last entry for each card in Momir
 
+CMClist <- vector()
+
 for(i in 1:length(Momir)){
-  Momir[[i]][length(Momir[[i]]) + 1] <- getCMC(Momir[[i]][2])
+  tempCMC <- getCMC(Momir[[i]][2])
+  Momir[[i]][length(Momir[[i]]) + 1] <- tempCMC
+  CMClist <- c(CMClist, tempCMC)
 }
 
+uniqueCMC <- sort(unique(CMClist))
+
 head(Momir)
+
+# calculate flying equity by CMC
+
+flyingEquity <- vector()
+
+for(cmc in uniqueCMC){
+  creatureCount <- 0
+  flyingCount <- 0
+  for(i in 1:length(Momir)){
+    if(Momir[[i]][length(Momir[[i]])] == cmc){
+      creatureCount <- creatureCount + 1
+      # search for "Flying" in row 5
+      FLYexpr <- gregexpr("(?=Flying)", Momir[[i]][5], perl = TRUE)[[1]]  #doesn't quite work : see Emrakul, the Promised End
+      if(!(min(FLYexpr) == -1)){
+        flyingCount <- flyingCount + 1
+      }
+    }
+  }
+  # append flyingEquity with appropriate EV
+  flyingEquity <- c(flyingEquity, (flyingCount / creatureCount))
+}
+
+print(data.frame(uniqueCMC, flyingEquity))
