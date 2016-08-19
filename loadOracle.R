@@ -2,6 +2,19 @@
 # some documentation should go here
 #####
 
+# Credits and Licensing : 
+# 
+# this code is written by Ben Young @BitBotTestBot on Twitter
+# 
+# please feel free to use it for any media that is available freely ala MTGGoldfish or ChannelFireball
+# as of 08/19/2106. Please credit me by name and twitter handle!
+# 
+# you may not use this code for any media or software that requires a paywall
+# this includes SCG articles, and pay-to-use software.
+#
+# any questions? tweet me @BitBotTestBot
+
+
 # get oracle from yawgatog
 
 # helpful links that informed some of the code below :
