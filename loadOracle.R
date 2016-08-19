@@ -181,23 +181,23 @@ getCMC <- function(manaCost){  # if new mana paradigms emerge, this will need to
     }
   # if contains "(w/" | "(u/" | "(r/" | "(b/" | "(g/" [1 per] #check that phyrexian mana CMC = 1
     SPLITexpr <- gregexpr("(?=w/)", manaCost, perl = TRUE)[[1]]
-    if(!(SPLITexpr == -1)){
+    if(!(min(SPLITexpr) == -1)){
       SPLITdex <- c(SPLITdex, SPLITexpr[1:length(SPLITexpr)])
     }
     SPLITexpr <- gregexpr("(?=u/)", manaCost, perl = TRUE)[[1]]
-    if(!(SPLITexpr == -1)){
+    if(!(min(SPLITexpr) == -1)){
       SPLITdex <- c(SPLITdex, SPLITexpr[1:length(SPLITexpr)])
     }
     SPLITexpr <- gregexpr("(?=b/)", manaCost, perl = TRUE)[[1]]
-    if(!(SPLITexpr == -1)){
+    if(!(min(SPLITexpr) == -1)){
       SPLITdex <- c(SPLITdex, SPLITexpr[1:length(SPLITexpr)])
     }
     SPLITexpr <- gregexpr("(?=r/)", manaCost, perl = TRUE)[[1]]
-    if(!(SPLITexpr == -1)){
+    if(!(min(SPLITexpr) == -1)){
       SPLITdex <- c(SPLITdex, SPLITexpr[1:length(SPLITexpr)])
     }
     SPLITexpr <- gregexpr("(?=g/)", manaCost, perl = TRUE)[[1]]
-    if(!(SPLITexpr == -1)){
+    if(!(min(SPLITexpr) == -1)){
       SPLITdex <- c(SPLITdex, SPLITexpr[1:length(SPLITexpr)])
     }
     runningTotal <- runningTotal + length(SPLITdex)  # need if for empty case ######### !!! !!! !!!
@@ -214,27 +214,27 @@ getCMC <- function(manaCost){  # if new mana paradigms emerge, this will need to
     }                                
   # if contains "W" | "U" | "R" | "B" | "G" | "C" [1 per]
     STDexpr <- gregexpr("(?=W)", manaCost, perl = TRUE)[[1]]
-    if(!(STDexpr == -1)){
+    if(!(min(STDexpr) == -1)){
       STDdex <- c(STDdex, STDexpr[1:length(STDexpr)])
     }
     STDexpr <- gregexpr("(?=U)", manaCost, perl = TRUE)[[1]]
-    if(!(STDexpr == -1)){
+    if(!(min(STDexpr) == -1)){
       STDdex <- c(STDdex, STDexpr[1:length(STDexpr)])
     }
     STDexpr <- gregexpr("(?=B)", manaCost, perl = TRUE)[[1]]
-    if(!(STDexpr == -1)){
+    if(!(min(STDexpr) == -1)){
       STDdex <- c(STDdex, STDexpr[1:length(STDexpr)])
     }
     STDexpr <- gregexpr("(?=R)", manaCost, perl = TRUE)[[1]]
-    if(!(STDexpr == -1)){
+    if(!(min(STDexpr) == -1)){
       STDdex <- c(STDdex, STDexpr[1:length(STDexpr)])
     }
     STDexpr <- gregexpr("(?=G)", manaCost, perl = TRUE)[[1]]
-    if(!(STDexpr == -1)){
+    if(!(min(STDexpr) == -1)){
       STDdex <- c(STDdex, STDexpr[1:length(STDexpr)])
     }
     STDexpr <- gregexpr("(?=C)", manaCost, perl = TRUE)[[1]]
-    if(!(STDexpr == -1)){
+    if(!(min(STDexpr) == -1)){
       STDdex <- c(STDdex, STDexpr[1:length(STDexpr)])
     }
     runningTotal <- runningTotal + length(STDdex)  
