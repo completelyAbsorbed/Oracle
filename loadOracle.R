@@ -212,11 +212,59 @@ getCMC <- function(manaCost){  # if new mana paradigms emerge, this will need to
         manaCost <- substr(manaCost, max(SPLITdex) + 4, nchar(manaCost))
       }
     }                                
-    # remove listings
-  
   # if contains "W" | "U" | "R" | "B" | "G" | "C" [1 per]
-  
+    STDexpr <- gregexpr("(?=W)", manaCost, perl = TRUE)[[1]]
+    if(!(STDexpr == -1)){
+      STDdex <- c(STDdex, STDexpr[1:length(STDexpr)])
+    }
+    STDexpr <- gregexpr("(?=U)", manaCost, perl = TRUE)[[1]]
+    if(!(STDexpr == -1)){
+      STDdex <- c(STDdex, STDexpr[1:length(STDexpr)])
+    }
+    STDexpr <- gregexpr("(?=B)", manaCost, perl = TRUE)[[1]]
+    if(!(STDexpr == -1)){
+      STDdex <- c(STDdex, STDexpr[1:length(STDexpr)])
+    }
+    STDexpr <- gregexpr("(?=R)", manaCost, perl = TRUE)[[1]]
+    if(!(STDexpr == -1)){
+      STDdex <- c(STDdex, STDexpr[1:length(STDexpr)])
+    }
+    STDexpr <- gregexpr("(?=G)", manaCost, perl = TRUE)[[1]]
+    if(!(STDexpr == -1)){
+      STDdex <- c(STDdex, STDexpr[1:length(STDexpr)])
+    }
+    STDexpr <- gregexpr("(?=C)", manaCost, perl = TRUE)[[1]]
+    if(!(STDexpr == -1)){
+      STDdex <- c(STDdex, STDexpr[1:length(STDexpr)])
+    }
+    runningTotal <- runningTotal + length(STDdex)  
+    
+    # augment manaCost, 
+    if(length(STDdex > 0)){
+      if(min(STDdex) > 1){
+        manaCost <- paste(substr(manaCost, 1, min(STDdex) - 1), 
+                          substr(manaCost, max(STDdex) + 1, nchar(manaCost)), sep = "")
+      }
+      else{
+        manaCost <- substr(manaCost, max(STDdex) + 1, nchar(manaCost))
+      }
+    }                                
+    
     # remove listings
   
   # should be nothing or a number remaining [# or 0]
+  if(nchar(manaCost) == 0){
+    # if nchar = 0, do nothing, we're done!
+    # otherwise, extract the remaining value and add
+  }
+  else{
+    runningTotal <- runningTotal + as.numeric(manaCost)
+  }
+    
+  return(runningTotal)
+}
+
+
+for(mc in UniqueMC){
+  print(paste("Mana Cost : ", mc, "      CMC : ", getCMC(mc), sep = ""))
 }
